@@ -1,4 +1,4 @@
-let getUser = function (personsArray, personId) {
+let getPerson = function (personsArray, personId) {
 
   let result = false;
  
@@ -10,4 +10,4 @@ let getUser = function (personsArray, personId) {
   return result;
 }
 
-module.exports = getUser;
+module.exports = getPerson;
