@@ -3,6 +3,7 @@ const http = require('http');
 const getPerson = require('./getPerson');
 const createPerson = require('./createPerson');
 const updatePerson = require('./updatePerson');
+const deletePerson = require('./deletePerson');
 
 /*
   {
@@ -95,6 +96,14 @@ const server = http.createServer( (req, res) => {
           res.write(JSON.stringify(updatedPerson));
           res.end();
         })      
+
+      }
+      
+      if (req.method === 'DELETE') {
+
+        deletePerson(personsArray, person);
+        res.writeHead(204);
+        res.end();
 
       }
 
