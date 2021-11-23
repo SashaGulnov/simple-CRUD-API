@@ -1,11 +1,11 @@
 const {v4: uuidv4} = require('uuid');
 
-const createPerson = function (postedPerson) {
+const createPerson = function (personToCreate) {
   return response = {
     "id": uuidv4(),
-    "name": postedPerson.name,
-    "age": postedPerson.age,
-    "hobbies": postedPerson.hobbies
+    "name": personToCreate.name,
+    "age": personToCreate.age,
+    "hobbies": personToCreate.hobbies
   };
 }
 

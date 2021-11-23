@@ -2,6 +2,7 @@
 const http = require('http');
 const getPerson = require('./getPerson');
 const createPerson = require('./createPerson');
+const updatePerson = require('./updatePerson');
 
 /*
   {
@@ -21,7 +22,7 @@ const createPerson = require('./createPerson');
   }
  */
 
-let userArray = [];
+let personsArray = [];
 
 const server = http.createServer( (req, res) => {
 
@@ -33,23 +34,23 @@ const server = http.createServer( (req, res) => {
     case `/${path[1]}`:
 
       if (req.method === 'GET'){
-        res.write(JSON.stringify(userArray));
+        res.write(JSON.stringify(personsArray));
         res.end();
       }
 
       if (req.method === 'POST'){
 
-        let body = "";
+        let personToCreate = "";
         let newPerson;
 
         req.on('data', (chunk) => {
-          body+=chunk.toString();
+          personToCreate+=chunk.toString();
         })
 
         req.on('end', () => {
-          body = JSON.parse(body);
-          newPerson = createPerson(body);
-          userArray.push(newPerson);
+          personToCreate = JSON.parse(personToCreate);
+          newPerson = createPerson(personToCreate);
+          personsArray.push(newPerson);
           res.writeHead(201);
           res.write(JSON.stringify(newPerson));
           // res.statusCode = 201;
@@ -61,17 +62,44 @@ const server = http.createServer( (req, res) => {
       break;
 
     case `/${path[1]}/${path[2]}`:
-      let person = getPerson(userArray, path[2]);
-      if (person.id) {
-        res.write(JSON.stringify(person));
-        res.end();
+
+      let person = getPerson(personsArray, path[2]);
+
+      if (req.method === 'GET'){
+
+        
+        if (person.id) {
+          res.write(JSON.stringify(person));
+          res.end();
+        }
+        else {
+          res.writeHead(404);
+          res.write('Person does not exist');
+          res.end();
+        }
+
       }
-      else {
-        res.writeHead(404);
-        res.write('Person does not exist');
-        res.end();
+
+      if (req.method === 'PUT') {
+
+        let updatedOptions = '';
+
+        req.on('data', (chunk) => {
+          updatedOptions+=chunk.toString();
+        })
+
+        req.on('end', () => {
+          updatedOptions = JSON.parse(updatedOptions);
+          let updatedPerson = updatePerson(personsArray, person, updatedOptions);
+          res.writeHead(201);
+          res.write(JSON.stringify(updatedPerson));
+          res.end();
+        })      
+
       }
+
       break;
+
     default :
       res.writeHead(404);
       res.write('Invalid path');
