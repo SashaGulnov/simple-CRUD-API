@@ -1,2 +1,19 @@
-# simple-CRUD-API
-implements simple CRUD API using in-memory database underneath.
+# Simple CRUD API
+
+## Details:
+
+1. API path `/person`:
+    * **GET** `/person` or `/person/${personId}` should return all persons or person with corresponding `personId`
+    * **POST** `/person` is used to create record about new person and store it in database
+    * **PUT** `/person/${personId}` is used to update record about existing person
+    * **DELETE** `/person/${personId}` is used to delete record about existing person from database
+2. Persons are stored as `objects` that have following properties:
+    * `id` — unique identifier (`string`, `uuid`) generated on server side
+    * `name` — person's name (`string`, **required**)
+    * `age` — person's age (`number`, **required**)
+    * `hobbies` — person's hobbies (`array` of `strings` or empty `array`, **required**)
+3. Requests to non-existing endpoints (e.g. `/some-non/existing/resource`) should be handled.
+4. Internal server errors should be handled and processed correctly.
+5. Value of port on which application is running should be stored in `.env` file.
+6. There should be 2 modes of running application: **development** and **production**
+7. There could be some tests for API.
